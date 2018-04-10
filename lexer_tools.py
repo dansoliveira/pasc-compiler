@@ -15,7 +15,7 @@ class Token:
         self.coluna = coluna
 
     def formata_token_print(self):
-        return '<{},"{}"> linha: {} | coluna: {}'.format(self.classe, self.lexema, self.linha, self.coluna)
+        return '<{},"{}"> linha: {} | coluna: {}'.format(self.classe.name, self.lexema, self.linha, self.coluna)
 
     @property
     def classe(self):
@@ -29,23 +29,30 @@ class Token:
 class TabelaDeSimbolos:
 
     def __init__(self):
-        self.tabela_de_simbolos = {Token("KW", "if", 0, 0): InfIdentificador(),
-                                   Token("KW", "else", 0, 0): InfIdentificador(),
-                                   Token("KW", "while", 0, 0): InfIdentificador(),
-                                   Token("KW", "write", 0, 0): InfIdentificador(),
-                                   Token("KW", "read", 0, 0): InfIdentificador(),
-                                   Token("KW", "num", 0, 0): InfIdentificador(),
-                                   Token("KW", "char", 0, 0): InfIdentificador(),
-                                   Token("KW", "not", 0, 0): InfIdentificador(),
-                                   Token("KW", "or", 0, 0): InfIdentificador(),
-                                   Token("KW", "and", 0, 0): InfIdentificador()}
+        self.tabela_de_simbolos = {Token(Tipo.KW, "if", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "else", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "while", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "write", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "read", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "num", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "char", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "not", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "or", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "and", 0, 0): InfIdentificador()}
 
     def add(self, token, inf_identificador):
         self.tabela_de_simbolos[token] = inf_identificador
 
-    def get(self, token):
-        return self.tabela_de_simbolos.get(token)
+    def retorna_token(self, lexema):
+        for token in self.tabela_de_simbolos.keys():
+            if token.lexema == lexema:
+                return token
 
+        return None
+
+    def imprime_ts(self):
+        for token in self.tabela_de_simbolos.keys():
+            print(token.formata_token_print())
 
 class Tipo(Enum):
     EOF = -1
