@@ -10,7 +10,7 @@ class Lexer():
     num_estado = 0
     lexema = []
     tabela_de_simbolos = TabelaDeSimbolos()
-    arquivo = open("teste_pasc", "rb")
+    arquivo = open("teste_pasc3_erro.psc", "rb")
 
     def q0(self):
         if self.carac_decoded is self.EOF:
@@ -126,6 +126,8 @@ class Lexer():
         if self.carac_decoded.isdigit():
             self.num_estado = 3
             self.lexema.append(self.carac_decoded)
+        else:
+            self.sinaliza_erro("Caractere '{}' inválido. É esperado um dígito.".format(self.carac_decoded), self.linha, self.coluna)
 
         return None
 
@@ -191,6 +193,7 @@ class Lexer():
             self.sinaliza_erro("Não é permitida a construção de um literal em duas linhas", self.linha, self.coluna_inicial)
         else:
             self.num_estado = 9
+            self.lexema.append(self.carac_decoded)
 
         return None
 
@@ -216,10 +219,13 @@ class Lexer():
 
     def q11(self):
         self.coluna += 1
-        if self.carac_decoded.isalpha() or self.carac_decoded.isdigit() or self.carac_decoded is "_":
+        if self.carac_decoded is self.EOF:
+            self.sinaliza_erro("ID não fechado até o final do arquivo!".format(self.carac_decoded), self.linha, self.coluna)
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
+        elif self.carac_decoded.isalpha() or self.carac_decoded.isdigit() or self.carac_decoded is "_":
             self.num_estado = 11
             self.lexema.append(self.carac_decoded)
-        else:
+        elif self.carac_decoded is " ":
             self.num_estado = 12
             self.retorna_ponteiro()
             tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
@@ -227,8 +233,10 @@ class Lexer():
             if tkn is None:
                 return Token(Tipo.ID, ''.join(self.lexema), self.linha, self.coluna_inicial)
 
-            print("    >>> Token " + tkn.formata_token_print() + " já existe")
+            #print("    >>> Token " + tkn.formata_token_print() + " já existe")
             return tkn
+        else:
+            self.sinaliza_erro("Caractere '{}' inválido. É esperado um caractere válido!".format(self.carac_decoded), self.linha, self.coluna)
 
         return None
 
@@ -240,8 +248,6 @@ class Lexer():
         else:
             self.retorna_ponteiro()
             return Token(Tipo.OP_ASS, "=", self.linha, self.coluna_inicial)
-
-        return None
 
     def q22(self):
         self.coluna += 1
@@ -259,6 +265,7 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("Comentário de uma linha não fechado")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "\n":
             self.linha += 1
             self.coluna = 1
@@ -271,7 +278,10 @@ class Lexer():
 
     def q25(self):
         self.coluna += 1
-        if self.carac_decoded is "*":
+        if self.carac_decoded is self.EOF:
+            self.sinaliza_erro("Comentário de múltiplas linhas não fechado", self.linha, self.coluna)
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
+        elif self.carac_decoded is "*":
             self.num_estado = 26
         else:
             if self.carac is "\n":
@@ -285,7 +295,8 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("Comentário de múltiplas linhas não fechado", self.linha, self.coluna)
-        if self.carac_decoded is "/":
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
+        elif self.carac_decoded is "/":
             self.num_estado = 0
             print("Comentário múltiplas linhas descartado. Linha: {} Coluna: {}".format(self.linha, self.coluna))
         elif self.carac_decoded is "*":
@@ -310,7 +321,7 @@ class Lexer():
             self.num_estado = 0
             return Token(Tipo.OP_GE, ">=", self.linha, self.coluna_inicial)
         else:
-            self.retora_ponteiro()
+            self.retorna_ponteiro()
             return Token(Tipo.OP_GT, ">", self.linha, self.coluna_inicial)
 
     def q37(self):
@@ -343,8 +354,9 @@ class Lexer():
                     return token
 
     def retorna_ponteiro(self):
-        self.arquivo.seek(-1, 1)
-        self.coluna -= 1
+        if (self.arquivo.peek(1)[:1].decode("latin1") != self.EOF):
+            self.arquivo.seek(-1, 1)
+            self.coluna -= 1
         self.num_estado = 0
 
     def sinaliza_erro(self, mensagem, linha, coluna):
