@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 6.4.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="q0">
+			<x>1046.0</x>
+			<y>368.0</y>
+			<initial/>
+		</state>
+		<state id="1" name="q11">
+			<x>1207.0</x>
+			<y>234.0</y>
+		</state>
+		<state id="2" name="q12">
+			<x>1309.0</x>
+			<y>167.0</y>
+			<label>&lt;ID,lexema&gt; *</label>
+			<final/>
+		</state>
+		<state id="3" name="q8">
+			<x>1148.0</x>
+			<y>199.0</y>
+		</state>
+		<state id="4" name="q10">
+			<x>1288.0</x>
+			<y>88.0</y>
+			<label>&lt;LIT,lexema&gt;</label>
+			<final/>
+		</state>
+		<state id="5" name="q5">
+			<x>1076.0</x>
+			<y>184.0</y>
+		</state>
+		<state id="6" name="q7">
+			<x>1172.0</x>
+			<y>-4.0</y>
+			<label>&lt;CON_CHAR,lexema&gt;</label>
+			<final/>
+		</state>
+		<state id="7" name="q1">
+			<x>966.0</x>
+			<y>200.0</y>
+		</state>
+		<state id="8" name="q2">
+			<x>1009.0</x>
+			<y>82.0</y>
+		</state>
+		<state id="9" name="q4">
+			<x>836.0</x>
+			<y>134.0</y>
+			<label>&lt;CON_NUM,lexema&gt; *</label>
+			<final/>
+		</state>
+		<state id="10" name="q19">
+			<x>1143.0</x>
+			<y>544.0</y>
+		</state>
+		<state id="11" name="q21">
+			<x>1154.0</x>
+			<y>640.0</y>
+			<label>&lt;OP_EQ,"=="&gt;</label>
+			<final/>
+		</state>
+		<state id="12" name="q20">
+			<x>1250.0</x>
+			<y>615.0</y>
+			<label>&lt;OP_ASS,"="&gt; *</label>
+			<final/>
+		</state>
+		<state id="13" name="q34">
+			<x>777.0</x>
+			<y>359.0</y>
+		</state>
+		<state id="14" name="q35">
+			<x>630.0</x>
+			<y>395.0</y>
+			<label>&lt;OP_GE,"&gt;="&gt;</label>
+			<final/>
+		</state>
+		<state id="15" name="q36">
+			<x>643.0</x>
+			<y>300.0</y>
+			<label>&lt;OP_GT,"&gt;"&gt; *</label>
+			<final/>
+		</state>
+		<state id="16" name="q31">
+			<x>799.0</x>
+			<y>452.0</y>
+		</state>
+		<state id="17" name="q32">
+			<x>692.0</x>
+			<y>538.0</y>
+			<label>&lt;OP_LE,"&lt;="&gt;</label>
+			<final/>
+		</state>
+		<state id="18" name="q33">
+			<x>645.0</x>
+			<y>460.0</y>
+			<label>&lt;OP_LT,"&lt;"&gt; *</label>
+			<final/>
+		</state>
+		<state id="19" name="q37">
+			<x>840.0</x>
+			<y>292.0</y>
+		</state>
+		<state id="20" name="q38">
+			<x>744.0</x>
+			<y>217.0</y>
+			<label>&lt;OP_NE,"!="&gt;</label>
+			<final/>
+		</state>
+		<state id="21" name="q30">
+			<x>833.0</x>
+			<y>502.0</y>
+			<label>&lt;OP_AD,"+"&gt;</label>
+			<final/>
+		</state>
+		<state id="22" name="q24">
+			<x>1003.0</x>
+			<y>747.0</y>
+			<label>Comentário 1 linha</label>
+			<final/>
+		</state>
+		<state id="23" name="q29">
+			<x>898.0</x>
+			<y>557.0</y>
+			<label>&lt;OP_MIN,"-"&gt;</label>
+			<final/>
+		</state>
+		<state id="24" name="q27">
+			<x>1139.0</x>
+			<y>833.0</y>
+			<label>Comentário múltiplas linhas</label>
+			<final/>
+		</state>
+		<state id="25" name="q28">
+			<x>983.0</x>
+			<y>583.0</y>
+			<label>&lt;OP_MUL,"*"&gt;</label>
+			<final/>
+		</state>
+		<state id="26" name="q14">
+			<x>1350.0</x>
+			<y>291.0</y>
+			<label>&lt;SMB_COM,","&gt;</label>
+			<final/>
+		</state>
+		<state id="27" name="q22">
+			<x>1050.0</x>
+			<y>646.0</y>
+		</state>
+		<state id="28" name="q23">
+			<x>959.0</x>
+			<y>659.0</y>
+			<label>&lt;OP_DIV,"/"&gt; *</label>
+			<final/>
+		</state>
+		<state id="29" name="q25">
+			<x>1113.0</x>
+			<y>758.0</y>
+		</state>
+		<state id="30" name="q26">
+			<x>1204.0</x>
+			<y>756.0</y>
+		</state>
+		<state id="31" name="q18">
+			<x>1278.0</x>
+			<y>534.0</y>
+			<label>&lt;SMB_OBC,"{"&gt;</label>
+			<final/>
+		</state>
+		<state id="32" name="q17">
+			<x>1319.0</x>
+			<y>473.0</y>
+			<label>&lt;SMB_CBC,"}"&gt;</label>
+			<final/>
+		</state>
+		<state id="33" name="q16">
+			<x>1360.0</x>
+			<y>410.0</y>
+			<label>&lt;SMB_OPA,"("&gt;</label>
+			<final/>
+		</state>
+		<state id="34" name="q15">
+			<x>1371.0</x>
+			<y>350.0</y>
+			<label>&lt;SMB_CPA,")"&gt;</label>
+			<final/>
+		</state>
+		<state id="35" name="q13">
+			<x>1324.0</x>
+			<y>233.0</y>
+			<label>&lt;SMB_SEM,";"&gt;</label>
+			<final/>
+		</state>
+		<state id="36" name="q6">
+			<x>1135.0</x>
+			<y>91.0</y>
+		</state>
+		<state id="37" name="q3">
+			<x>892.0</x>
+			<y>37.0</y>
+		</state>
+		<state id="38" name="q9">
+			<x>1180.0</x>
+			<y>117.0</y>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>29</from>
+			<to>29</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>8</from>
+			<to>37</to>
+			<read>digit</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>35</to>
+			<read>;</read>
+		</transition>
+		<transition>
+			<from>13</from>
+			<to>15</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>5</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>13</to>
+			<read>&gt;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>7</to>
+			<read>digit</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>32</to>
+			<read>}</read>
+		</transition>
+		<transition>
+			<from>27</from>
+			<to>28</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>19</to>
+			<read>!</read>
+		</transition>
+		<transition>
+			<from>38</from>
+			<to>38</to>
+			<read>ASCII</read>
+		</transition>
+		<transition>
+			<from>13</from>
+			<to>14</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>37</from>
+			<to>9</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>23</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>29</from>
+			<to>30</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>11</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>12</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>10</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>9</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>5</from>
+			<to>36</to>
+			<read>ASCII</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>38</to>
+			<read>ASCII</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>21</to>
+			<read>+</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>7</to>
+			<read>digit</read>
+		</transition>
+		<transition>
+			<from>37</from>
+			<to>37</to>
+			<read>digit</read>
+		</transition>
+		<transition>
+			<from>16</from>
+			<to>17</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>27</from>
+			<to>29</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>38</from>
+			<to>4</to>
+			<read>"</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>.</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>letter</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>25</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>30</from>
+			<to>24</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>30</from>
+			<to>29</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>19</from>
+			<to>20</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>3</to>
+			<read>"</read>
+		</transition>
+		<transition>
+			<from>30</from>
+			<to>30</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>27</from>
+			<to>22</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>36</from>
+			<to>6</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>27</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>26</to>
+			<read>,</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>33</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>16</to>
+			<read>&lt;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>31</to>
+			<read>{</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>34</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>1</to>
+			<read>letter/digit</read>
+		</transition>
+		<transition>
+			<from>16</from>
+			<to>18</to>
+			<read/>
+		</transition>
+		<note>
+			<text>
+</text>
+			<x>168.0</x>
+			<y>224.0</y>
+		</note>
+	</automaton>
+</structure>
