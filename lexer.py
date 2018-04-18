@@ -176,10 +176,11 @@ class Lexer():
             return tkn
         else:
             carac_para_mensagem = self.carac_decoded
-            if self.carac_decoded is "\n":
-                self.linha += 1
-                self.coluna = 1
-                carac_para_mensagem = "Quebra de linha"
+            if self.carac_decoded is "\r" or "\n":
+                if self.carac_decoded is "\n":
+                    self.linha += 1
+                    self.coluna = 1
+                    carac_para_mensagem = "Quebra de linha"
 
             self.sinaliza_erro("Caractere '{}' é inválido. É esperado uma aspas simples".format(carac_para_mensagem), self.linha, self.coluna - 1)
 
@@ -187,9 +188,10 @@ class Lexer():
 
     def q8(self):
         self.coluna += 1
-        if self.carac_decoded is "\n":
-            self.linha += 1
-            self.coluna = 1
+        if self.carac_decoded is "\r" or "\n":
+            if self.carac_decoded is "\n":
+                self.linha += 1
+                self.coluna = 1
             self.sinaliza_erro("Não é permitida a construção de um literal em duas linhas", self.linha, self.coluna_inicial)
         else:
             self.num_estado = 9
@@ -199,7 +201,7 @@ class Lexer():
 
     def q9(self):
         self.coluna += 1
-        if self.carac_decoded is "\n":
+        if self.carac_decoded is "\r" or "\n":
             self.linha += 1
             self.coluna = 1
             self.sinaliza_erro("Não é permitida a construção de um literal em duas linhas", self.linha, self.coluna_inicial)
@@ -225,7 +227,7 @@ class Lexer():
         elif self.carac_decoded.isalpha() or self.carac_decoded.isdigit() or self.carac_decoded is "_":
             self.num_estado = 11
             self.lexema.append(self.carac_decoded)
-        elif self.carac_decoded is " ":
+        elif self.carac_decoded is " " or "\r" or "\n":
             self.num_estado = 12
             self.retorna_ponteiro()
             tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
@@ -354,9 +356,8 @@ class Lexer():
                     return token
 
     def retorna_ponteiro(self):
-        if (self.arquivo.peek(1)[:1].decode("latin1") != self.EOF):
-            self.arquivo.seek(-1, 1)
-            self.coluna -= 1
+        self.arquivo.seek(-1, 1)
+        self.coluna -= 1
         self.num_estado = 0
 
     def sinaliza_erro(self, mensagem, linha, coluna):
