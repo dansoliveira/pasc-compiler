@@ -8,9 +8,11 @@ class InfIdentificador:
 
 class Token:
 
-    def __init__(self, classe, lexema):
+    def __init__(self, classe, lexema, linha, coluna):
         self.__classe = classe
         self.lexema = lexema
+        self.linha = linha
+        self.coluna = coluna
 
     def formata_token_print(self, linha, coluna):
         return '<{},"{}"> linha: {} | coluna: {}'.format(self.classe.name, self.lexema, linha, coluna)
@@ -27,17 +29,17 @@ class Token:
 class TabelaDeSimbolos:
 
     def __init__(self):
-        self.tabela_de_simbolos = {Token(Tipo.KW, "program"): InfIdentificador()
-                                   Token(Tipo.KW, "if"): InfIdentificador(),
-                                   Token(Tipo.KW, "else"): InfIdentificador(),
-                                   Token(Tipo.KW, "while"): InfIdentificador(),
-                                   Token(Tipo.KW, "write"): InfIdentificador(),
-                                   Token(Tipo.KW, "read"): InfIdentificador(),
-                                   Token(Tipo.KW, "num"): InfIdentificador(),
-                                   Token(Tipo.KW, "char"): InfIdentificador(),
-                                   Token(Tipo.KW, "not"): InfIdentificador(),
-                                   Token(Tipo.KW, "or"): InfIdentificador(),
-                                   Token(Tipo.KW, "and"): InfIdentificador()}
+        self.tabela_de_simbolos = {Token(Tipo.KW, "program", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "if", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "else", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "while", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "write", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "read", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "num", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "char", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "not", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "or", 0, 0): InfIdentificador(),
+                                   Token(Tipo.KW, "and", 0, 0): InfIdentificador()}
 
     def add(self, token, inf_identificador):
         self.tabela_de_simbolos[token] = inf_identificador

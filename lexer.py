@@ -1,4 +1,5 @@
 from lexer_tools import *
+import sys
 
 class Lexer():
     caracs_especiais = {"\r": "Carro de retorno", "\n": "Quebra de linha", "\b": "Espaço em branco", "\t": "Tabulação",
@@ -13,9 +14,14 @@ class Lexer():
     num_estado = 0
     lexema = []
     tabela_de_simbolos = TabelaDeSimbolos()
-    arquivo = open("teste_pasc2_erro.psc", "rb")
 
-    def __init__(self):
+    def __init__(self, nome_arquivo):
+        try:
+            self.arquivo = open(nome_arquivo, "rb")
+        except OSError as err:
+            print('[ERRO] Não foi possível abrir o arquivo. Motivo: {}'.format(err))
+            sys.exit(1)
+
         self.switch = {
             0: self.q0,
             1: self.q1,
@@ -38,7 +44,7 @@ class Lexer():
 
     def q0(self):
         if self.carac_decoded is self.EOF:
-            return Token(Tipo.EOF, "EOF")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "\n":
             self.linha += 1
             self.coluna = 1
@@ -70,27 +76,27 @@ class Lexer():
         elif self.carac_decoded is ";":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.SMB_SEM, ";")
+            return Token(Tipo.SMB_SEM, ";", self.linha, self.coluna_inicial)
         elif self.carac_decoded is ",":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.SMB_COM, ",")
+            return Token(Tipo.SMB_COM, ",", self.linha, self.coluna_inicial)
         elif self.carac_decoded is ")":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.SMB_CPA, ")")
+            return Token(Tipo.SMB_CPA, ")", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "(":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.SMB_OPA, "(")
+            return Token(Tipo.SMB_OPA, "(", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "}":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.SMB_CBC, "}")
+            return Token(Tipo.SMB_CBC, "}", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "{":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.SMB_OBC, "{")
+            return Token(Tipo.SMB_OBC, "{", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "=":
             self.coluna_inicial = self.coluna
             self.coluna += 1
@@ -102,15 +108,15 @@ class Lexer():
         elif self.carac_decoded is "*":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.OP_MUL, "*")
+            return Token(Tipo.OP_MUL, "*", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "-":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.OP_MIN, "-")
+            return Token(Tipo.OP_MIN, "-", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "+":
             self.coluna_inicial = self.coluna
             self.coluna += 1
-            return Token(Tipo.OP_AD, "+")
+            return Token(Tipo.OP_AD, "+", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "<":
             self.coluna_inicial = self.coluna
             self.coluna += 1
@@ -139,7 +145,7 @@ class Lexer():
             #tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
 
             #if tkn is None:
-            return Token(Tipo.CON_NUM, ''.join(self.lexema))
+            return Token(Tipo.CON_NUM, ''.join(self.lexema), self.linha, self.coluna_inicial)
 
             #return tkn
 
@@ -165,7 +171,7 @@ class Lexer():
             #tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
 
             #if tkn is None:
-            return Token(Tipo.CON_NUM, ''.join(self.lexema))
+            return Token(Tipo.CON_NUM, ''.join(self.lexema), self.linha, self.coluna_inicial)
 
             #return tkn
 
@@ -195,7 +201,7 @@ class Lexer():
             #tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
 
             #if tkn is None:
-            return Token(Tipo.CON_CHAR, ''.join(self.lexema))
+            return Token(Tipo.CON_CHAR, ''.join(self.lexema), self.linha, self.coluna_inicial)
 
             #return tkn
         else:
@@ -214,7 +220,7 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("[Q8]Literal não fechado até o final do arquivo!".format(self.carac_decoded), self.linha, self.coluna)
-            return Token(Tipo.EOF, "EOF")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded in ["\r", "\n"]:
             if self.carac_decoded is "\n":
                 self.linha += 1
@@ -238,7 +244,7 @@ class Lexer():
             #tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
 
             #if tkn is None:
-            return Token(Tipo.LIT, ''.join(self.lexema))
+            return Token(Tipo.LIT, ''.join(self.lexema), self.linha, self.coluna_inicial)
 
             #return tkn
         else:
@@ -250,21 +256,21 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("[Q11]ID não fechado até o final do arquivo!".format(self.carac_decoded), self.linha, self.coluna)
-            return Token(Tipo.EOF, "EOF")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded.isalpha() or self.carac_decoded.isdigit() or self.carac_decoded is "_":
             self.num_estado = 11
             self.lexema.append(self.carac_decoded)
-        elif self.carac_decoded in [" ", "\r", "\n"]:
+        else: #elif self.carac_decoded in [" ", "\r", "\n", ";", ","]:#[" ", "\r", "\n"]:
             self.num_estado = 12
             self.retorna_ponteiro()
             tkn = self.tabela_de_simbolos.retorna_token(''.join(self.lexema))
 
             if tkn is None:
-                return Token(Tipo.ID, ''.join(self.lexema))
+                return Token(Tipo.ID, ''.join(self.lexema), self.linha, self.coluna_inicial)
 
             return tkn
-        else:
-            self.sinaliza_erro("[Q11]Caractere '{}' inválido. É esperado um caractere válido!".format(self.carac_decoded), self.linha, self.coluna)
+        #else:
+            #self.sinaliza_erro("[Q11]Caractere '{}' inválido. É esperado um caractere válido!".format(self.carac_decoded), self.linha, self.coluna)
 
         return None
 
@@ -272,10 +278,10 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is "=":
             self.num_estado = 0
-            return Token(Tipo.OP_EQ, "==")
+            return Token(Tipo.OP_EQ, "==", self.linha, self.coluna_inicial)
         else:
             self.retorna_ponteiro()
-            return Token(Tipo.OP_ASS, "=")
+            return Token(Tipo.OP_ASS, "=", self.linha, self.coluna_inicial)
 
     def q22(self):
         self.coluna += 1
@@ -285,7 +291,7 @@ class Lexer():
             self.num_estado = 25
         else:
             self.retorna_ponteiro()
-            return Token(Tipo.OP_DIV, "/")
+            return Token(Tipo.OP_DIV, "/", self.linha, self.coluna_inicial)
 
         return None
 
@@ -293,7 +299,7 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("[Q24]Comentário de uma linha não fechado")
-            return Token(Tipo.EOF, "EOF")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "\n":
             self.linha += 1
             self.coluna = 1
@@ -308,7 +314,7 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("[Q25]Comentário de múltiplas linhas não fechado", self.linha, self.coluna - 1)
-            return Token(Tipo.EOF, "EOF")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "*":
             self.num_estado = 26
         else:
@@ -323,7 +329,7 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is self.EOF:
             self.sinaliza_erro("[Q26]Comentário de múltiplas linhas não fechado", self.linha, self.coluna - 1)
-            return Token(Tipo.EOF, "EOF")
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "/":
             self.num_estado = 0
             print("Comentário múltiplas linhas descartado. Linha: {} Coluna: {}".format(self.linha, self.coluna - 1))
@@ -338,25 +344,25 @@ class Lexer():
         self.coluna += 1
         if self.carac_decoded is "=":
             self.num_estado = 0
-            return Token(Tipo.OP_LE, "<=")
+            return Token(Tipo.OP_LE, "<=", self.linha, self.coluna_inicial)
         else:
             self.retorna_ponteiro()
-            return Token(Tipo.OP_LT, "<")
+            return Token(Tipo.OP_LT, "<", self.linha, self.coluna_inicial)
 
     def q34(self):
         self.coluna += 1
         if self.carac_decoded is "=":
             self.num_estado = 0
-            return Token(Tipo.OP_GE, ">=")
+            return Token(Tipo.OP_GE, ">=", self.linha, self.coluna_inicial)
         else:
             self.retorna_ponteiro()
-            return Token(Tipo.OP_GT, ">")
+            return Token(Tipo.OP_GT, ">", self.linha, self.coluna_inicial)
 
     def q37(self):
         self.coluna += 1
         if self.carac_decoded is "=":
             self.num_estado = 0
-            return Token(Tipo.OP_NE, "!=")
+            return Token(Tipo.OP_NE, "!=", self.linha, self.coluna_inicial)
         else:
             carac_para_mensagem = self.carac_decoded
             if self.carac_decoded is "\n":
@@ -368,7 +374,7 @@ class Lexer():
         return None
 
     def proximo_token(self):
-        token = None
+        token_encontrado = None
         self.lexema = []
 
         while True:
@@ -378,9 +384,30 @@ class Lexer():
             estado = self.switch.get(self.num_estado)
 
             if estado is not None:
-                token = estado() # Executa o estado
-                if token is not None:
-                    return token
+                token_encontrado = estado() # Executa o estado
+                if token_encontrado is not None:
+                    token = self.tabela_de_simbolos.retorna_token(token_encontrado.lexema)
+                    if token_encontrado.classe is Tipo.EOF:
+                        print(token_encontrado.formata_token_print(self.linha, self.coluna_inicial))
+                        self.fechar_arquivo()
+                        sys.exit(0)
+
+                    if token is None:
+                        self.tabela_de_simbolos.add(token_encontrado, InfIdentificador())
+                        #print("Token <{},{}> adicionado à Tabela de Símbolos!".format(token_encontrado.classe.name, token_encontrado.lexema))
+                    elif token.classe is Tipo.KW:
+                        token_encontrado.classe = Tipo.KW
+
+                    #print(token_encontrado.formata_token_print(self.linha, self.coluna_inicial))
+
+                    return token_encontrado
+
+        #print("Fim Lexer")
+        #print("-" * 30)
+        #lexer.arquivo.close()
+
+    def fechar_arquivo(self):
+        self.arquivo.close()
 
     def retorna_ponteiro(self):
         self.arquivo.seek(-1, 1)
@@ -389,28 +416,3 @@ class Lexer():
 
     def sinaliza_erro(self, mensagem, linha, coluna):
         print("Erro: {}. Linha: {} Coluna: {}".format(mensagem, linha, coluna))
-
-if __name__ == "__main__":
-    lexer = Lexer()
-
-    while True:
-        token_retornado = lexer.proximo_token()
-        token = lexer.tabela_de_simbolos.retorna_token(token_retornado.lexema)
-
-        if token_retornado.classe is Tipo.EOF:
-            print(token_retornado.formata_token_print(lexer.linha, lexer.coluna_inicial))
-            break
-
-        if token is None:
-            lexer.tabela_de_simbolos.add(token_retornado, InfIdentificador())
-            #print("Token <{},{}> adicionado à Tabela de Símbolos!".format(token_retornado.classe.name, token_retornado.lexema))
-        elif token.classe is Tipo.KW:
-            token_retornado.classe = Tipo.KW
-
-        print(token_retornado.formata_token_print(lexer.linha, lexer.coluna_inicial))
-
-    lexer.arquivo.close()
-    print("Fim Lexer")
-    print("-" * 30)
-    #print("> IMPRESSÃO DA TABELA DE SIMBOLOS")
-    #lexer.tabela_de_simbolos.imprime_ts()
