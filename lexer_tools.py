@@ -27,7 +27,8 @@ class Token:
 class TabelaDeSimbolos:
 
     def __init__(self):
-        self.tabela_de_simbolos = {Token(Tipo.KW, "if"): InfIdentificador(),
+        self.tabela_de_simbolos = {Token(Tipo.KW, "program"): InfIdentificador()
+                                   Token(Tipo.KW, "if"): InfIdentificador(),
                                    Token(Tipo.KW, "else"): InfIdentificador(),
                                    Token(Tipo.KW, "while"): InfIdentificador(),
                                    Token(Tipo.KW, "write"): InfIdentificador(),

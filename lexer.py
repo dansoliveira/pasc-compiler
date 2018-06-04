@@ -15,6 +15,27 @@ class Lexer():
     tabela_de_simbolos = TabelaDeSimbolos()
     arquivo = open("teste_pasc2_erro.psc", "rb")
 
+    def __init__(self):
+        self.switch = {
+            0: self.q0,
+            1: self.q1,
+            2: self.q2,
+            3: self.q3,
+            5: self.q5,
+            6: self.q6,
+            8: self.q8,
+            9: self.q9,
+            11: self.q11,
+            19: self.q19,
+            22: self.q22,
+            24: self.q24,
+            25: self.q25,
+            26: self.q26,
+            31: self.q31,
+            34: self.q34,
+            37: self.q37
+        }
+
     def q0(self):
         if self.carac_decoded is self.EOF:
             return Token(Tipo.EOF, "EOF")
@@ -346,7 +367,7 @@ class Lexer():
 
         return None
 
-    def proximo_token(self, switch):
+    def proximo_token(self):
         token = None
         self.lexema = []
 
@@ -354,7 +375,7 @@ class Lexer():
             self.carac = self.arquivo.read(1)
             self.carac_decoded = self.carac.decode("latin1")
             self.carac_decoded = self.carac_decoded.lower() if self.carac_decoded.isalpha() else self.carac_decoded
-            estado = switch.get(self.num_estado)
+            estado = self.switch.get(self.num_estado)
 
             if estado is not None:
                 token = estado() # Executa o estado
@@ -371,28 +392,9 @@ class Lexer():
 
 if __name__ == "__main__":
     lexer = Lexer()
-    switch = {
-        0: lexer.q0,
-        1: lexer.q1,
-        2: lexer.q2,
-        3: lexer.q3,
-        5: lexer.q5,
-        6: lexer.q6,
-        8: lexer.q8,
-        9: lexer.q9,
-        11: lexer.q11,
-        19: lexer.q19,
-        22: lexer.q22,
-        24: lexer.q24,
-        25: lexer.q25,
-        26: lexer.q26,
-        31: lexer.q31,
-        34: lexer.q34,
-        37: lexer.q37
-    }
 
     while True:
-        token_retornado = lexer.proximo_token(switch)
+        token_retornado = lexer.proximo_token()
         token = lexer.tabela_de_simbolos.retorna_token(token_retornado.lexema)
 
         if token_retornado.classe is Tipo.EOF:
