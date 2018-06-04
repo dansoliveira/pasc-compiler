@@ -3,15 +3,15 @@ Autores: Lucas e Daniel*/
 program programa3
 	char sexo;
 	num qtd_pessoas;
-	
+
 	{
-		read sexo
+		read sexo;
 
 		while (qtd_pessoas <= 20) {
 			if (sexo == 'F') {
-				write "Entrada permitida!"
+				write "Entrada permitida!";
 			} else {
-				write "Acesso negado!"
-			}
-		}	
+				write "Acesso negado!";
+			};
+		};
 	}

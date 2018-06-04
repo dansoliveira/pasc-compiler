@@ -2,22 +2,20 @@
 Autores: Lucas e Daniel*/
 program programa2
 	num valor_a, valor_b, valor_c;
-	
-	{
-		valor_a = 400
-		valor_b = 100
 
-		read valor_c
+	{
+		valor_a = 400;
+		valor_b = 100;
+
+		read valor_c;
 
 		if (((valor_a * valor_b)/2) > valor_c) {
-			write "Empréstimo aprovado"
+			write "Empréstimo aprovado";
 		} else {
 			if (valor_c == 200) {
-				write "Empréstimo aprovado com restrições."
+				write "Empréstimo aprovado com restrições.";
 			} else {
-				write "Empréstimo negado!"
-			}
-		}
-
-		
+				write "Empréstimo negado!";
+			};
+		};
 	}

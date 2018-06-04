@@ -2,17 +2,17 @@
 program programa1
 	num conta, saldo;
 	char sexo;
-	
+
 	{
-		conta = 122340
-		saldo = 120.50
-		sexo = 'F'
+		conta = 122340;
+		saldo = 120.50;
+		sexo = 'F';
 
 		if (saldo > 100) {
-			write "Possui saldo suficiente"
+			write "Possui saldo suficiente";
 		} else {
-			write "Erro: saldo insuficiente."
-		}
+			write "Erro: saldo insuficiente.";
+		};
 
-		
+
 	}
