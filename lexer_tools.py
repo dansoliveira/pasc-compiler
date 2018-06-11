@@ -52,8 +52,9 @@ class TabelaDeSimbolos:
         return None
 
     def imprime_ts(self):
+        print("-" * 10, "TABELA DE SÍMBOLOS", "-" * 10)
         for token in self.tabela_de_simbolos.keys():
-            print("<{}, {}>".format(token.classe, token.lexema))
+            print("<{},'{}'>".format(token.classe, token.lexema))
 
 class Tipo(Enum):
     EOF = -1

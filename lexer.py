@@ -130,7 +130,7 @@ class Lexer():
             self.coluna += 1
             self.num_estado = 37
         else:
-            self.sinaliza_erro("[Q0]Caractere '{}' inválido".format(self.carac_decoded), self.linha, self.coluna)
+            self.sinaliza_erro("[Q0]Caractere '{}' inválido".format(self.carac_decoded), self.linha, self.coluna_inicial)
 
         return None
 
@@ -154,7 +154,7 @@ class Lexer():
             self.num_estado = 3
             self.lexema.append(self.carac_decoded)
         else:
-            self.sinaliza_erro("[Q2]Caractere '{}' inválido. É esperado um dígito.".format(self.carac_decoded), self.linha, self.coluna)
+            self.sinaliza_erro("[Q2]Caractere '{}' inválido. É esperado um dígito.".format(self.carac_decoded), self.linha, self.coluna_inicial)
 
         return None
 
@@ -197,21 +197,23 @@ class Lexer():
                 if self.carac_decoded is "\n":
                     self.linha += 1
                     self.coluna = 1
+                    self.coluna_inicial = 1
                     carac_para_mensagem = "Quebra de linha"
 
-            self.sinaliza_erro("[Q6]Caractere '{}' é inválido. É esperado uma aspas simples".format(carac_para_mensagem), self.linha, self.coluna - 1)
+            self.sinaliza_erro("[Q6]Caractere '{}' é inválido. É esperado uma aspas simples".format(carac_para_mensagem), self.linha, self.coluna_inicial)
 
         return None
 
     def q8(self):
         self.coluna += 1
         if self.carac_decoded is self.EOF:
-            self.sinaliza_erro("[Q8]Literal não fechado até o final do arquivo!".format(self.carac_decoded), self.linha, self.coluna)
+            self.sinaliza_erro("[Q8]Literal não fechado até o final do arquivo!", self.linha, self.coluna_inicial)
             return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded in ["\r", "\n"]:
             if self.carac_decoded is "\n":
                 self.linha += 1
                 self.coluna = 1
+                self.coluna_inicial = 1
             self.sinaliza_erro("[Q8]Não é permitida a construção de um literal em duas linhas", self.linha, self.coluna_inicial)
         else:
             self.num_estado = 9
@@ -221,9 +223,13 @@ class Lexer():
 
     def q9(self):
         self.coluna += 1
-        if self.carac_decoded in ["\r", "\n"]:
+        if self.carac_decoded is self.EOF:
+            self.sinaliza_erro("[Q9]Literal não fechado até o final do arquivo", self.linha, self.coluna_inicial)
+            return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
+        elif self.carac_decoded in ["\r", "\n"]:
             self.linha += 1
             self.coluna = 1
+            self.coluna_inicial = 1
             self.sinaliza_erro("[Q9]Não é permitida a construção de um literal em duas linhas", self.linha, self.coluna_inicial)
         elif self.carac_decoded is '"':
             self.lexema.append(self.carac_decoded)
@@ -237,7 +243,7 @@ class Lexer():
     def q11(self):
         self.coluna += 1
         if self.carac_decoded is self.EOF:
-            self.sinaliza_erro("[Q11]ID não fechado até o final do arquivo".format(self.carac_decoded), self.linha, self.coluna)
+            self.sinaliza_erro("[Q11]ID não fechado até o final do arquivo", self.linha, self.coluna_inicial)
             return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded.isalpha() or self.carac_decoded.isdigit():
             self.num_estado = 11
@@ -278,13 +284,14 @@ class Lexer():
     def q24(self):
         self.coluna += 1
         if self.carac_decoded is self.EOF:
-            self.sinaliza_erro("[Q24]Comentário de uma linha não fechado")
+            self.sinaliza_erro("[Q24]Comentário de uma linha não fechado", self.linha, self.coluna_inicial)
             return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "\n":
             self.linha += 1
             self.coluna = 1
+            self.coluna_inicial = 1
             self.num_estado = 0
-            print("Comentário de 1 linha descartado. Linha: {} Coluna: {}".format(self.linha, self.coluna - 1))
+            #print("Comentário de 1 linha descartado. Linha: {} Coluna: {}".format(self.linha, self.coluna_inicial))
         else:
             self.num_estado = 24
 
@@ -293,7 +300,7 @@ class Lexer():
     def q25(self):
         self.coluna += 1
         if self.carac_decoded is self.EOF:
-            self.sinaliza_erro("[Q25]Comentário de múltiplas linhas não fechado", self.linha, self.coluna - 1)
+            self.sinaliza_erro("[Q25]Comentário de múltiplas linhas não fechado", self.linha, self.coluna_inicial)
             return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "*":
             self.num_estado = 26
@@ -301,6 +308,7 @@ class Lexer():
             if self.carac_decoded is "\n":
                 self.linha += 1
                 self.coluna = 1
+                self.coluna_inicial = 1
             self.num_estado = 25
 
         return None
@@ -308,11 +316,11 @@ class Lexer():
     def q26(self):
         self.coluna += 1
         if self.carac_decoded is self.EOF:
-            self.sinaliza_erro("[Q26]Comentário de múltiplas linhas não fechado", self.linha, self.coluna - 1)
+            self.sinaliza_erro("[Q26]Comentário de múltiplas linhas não fechado", self.linha, self.coluna_inicial)
             return Token(Tipo.EOF, "EOF", self.linha, self.coluna_inicial)
         elif self.carac_decoded is "/":
             self.num_estado = 0
-            print("Comentário múltiplas linhas descartado. Linha: {} Coluna: {}".format(self.linha, self.coluna - 1))
+            #print("Comentário múltiplas linhas descartado. Linha: {} Coluna: {}".format(self.linha, self.coluna_inicial))
         elif self.carac_decoded is "*":
             self.num_estado = 26
         else:
@@ -348,8 +356,9 @@ class Lexer():
             if self.carac_decoded is "\n":
                 self.linha += 1
                 self.coluna = 1
+                self.coluna_inicial = 1
                 carac_para_mensagem = "Quebra de linha"
-            self.sinaliza_erro("[Q37]Caractere {} inválido".format(carac_para_mensagem), self.linha, self.coluna)
+            self.sinaliza_erro("[Q37]Caractere {} inválido".format(carac_para_mensagem), self.linha, self.coluna_inicial)
 
         return None
 
@@ -370,6 +379,7 @@ class Lexer():
                     if token_encontrado.classe is Tipo.EOF:
                         print(token_encontrado.formata_token_print(self.linha, self.coluna_inicial))
                         self.fechar_arquivo()
+                        self.tabela_de_simbolos.imprime_ts()
                         sys.exit(0)
 
                     if token is None:
