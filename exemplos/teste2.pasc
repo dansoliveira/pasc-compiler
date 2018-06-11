@@ -1,0 +1,26 @@
+/** Teste2 ***/
+
+program P2
+   num x, y, z;
+   char k;
+
+   {
+      
+		y = z;
+		x = 10.423 * y;
+		k = 'g';
+		
+      read z;
+
+		if(not (y * 10 <= 100 and x / y >= 10)) {
+			write "C#n4a.m@luca qu& d1z SIM!";
+		}
+      else {
+         if(x + y != 10 or x - y == 10) {
+            write "OK";  
+         }
+         else {
+            write "NO; 
+         };
+      };
+   }  // Fim

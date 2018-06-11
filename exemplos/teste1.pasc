@@ -1,0 +1,10 @@
+/* 
+// Teste1 
+*/
+
+program P1 {
+   write "Teste 1 para o TP";
+   while(not 0) {
+      write "not 0";
+   };
+}
